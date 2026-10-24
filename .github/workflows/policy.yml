@@ -1,0 +1,29 @@
+# Judge every pull request with the BASE branch's policy and verifier.
+# The agent's GitHub App has no `workflows` permission, so it cannot edit this
+# file; and the verifier reads policy.toml, allowed_signers and itself from
+# the base commit, so a pull request cannot loosen the rule that judges it.
+name: policy
+on:
+  pull_request:
+  pull_request_review:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Routine paths ship; protected paths wait for the owner
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          git show "$BASE:verify/verify.py" > "$RUNNER_TEMP/verify.py"
+          python3 "$RUNNER_TEMP/verify.py" --base "$BASE" --head "$HEAD" \
+            --repo "$GITHUB_REPOSITORY" --pr "$PR"

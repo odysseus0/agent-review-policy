@@ -1,0 +1,13 @@
+# Everything not listed ships once CI is green and every commit is signed by
+# a key in allowed_signers. Listed paths also need the approver's review of
+# the exact head commit.
+approver = "odysseus0"
+protected = [
+  "migrations/**",   # irreversible: a human looks first
+  "policy.toml",     # the rules themselves
+  "allowed_signers",
+  "verify/**",
+  ".github/**",
+  "flake.nix",
+  "flake.lock",
+]
