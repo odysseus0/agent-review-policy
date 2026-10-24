@@ -1,3 +1,3 @@
-# principal  key   (one line per actor; the agent's key is printed on its first boot)
-# george@demo ssh-ed25519 AAAA...
-# agent@demo  ssh-ed25519 AAAA...
+# principal  key   (one line per actor)
+george@demo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDQuBVfiMvYw2J7O+sjB9xObGaL1ohi8xO9E6G9MMmI
+agent@demo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEXDu1s0ygAW2gMcZo+gDbTbWa5MgDcTrrJEZM/fbbSF
