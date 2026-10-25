@@ -3,9 +3,10 @@
 # file; and the verifier reads policy.toml, allowed_signers and itself from
 # the base commit, so a pull request cannot loosen the rule that judges it.
 name: policy
+# A review re-runs this same run (see policy-rerun.yml): a second run under
+# another event would leave the first, failed check in place.
 on:
   pull_request:
-  pull_request_review:
 permissions:
   contents: read
   pull-requests: read

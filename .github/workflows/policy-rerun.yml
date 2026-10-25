@@ -1,0 +1,20 @@
+# When the owner reviews, re-run the pull request's `policy` run so the
+# required check is re-judged with the new approval.
+name: policy-rerun
+on:
+  pull_request_review:
+    types: [submitted, dismissed]
+permissions:
+  actions: write
+jobs:
+  rerun:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow policy.yml \
+            --event pull_request --commit "$HEAD" --limit 1 \
+            --json databaseId -q '.[0].databaseId')
+          gh run rerun "$id" -R "$GITHUB_REPOSITORY"
